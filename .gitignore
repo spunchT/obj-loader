@@ -1,7 +1,9 @@
 build/
 out/
 .vs/
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
 CMakeUserPresets.json
 *.user
 *.suo

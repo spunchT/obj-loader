@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "CMake: Configure (VS 2022)",
+      "type": "process",
+      "command": "cmake",
+      "args": [
+        "-S",
+        "${workspaceFolder}",
+        "-B",
+        "${workspaceFolder}\\build",
+        "-G",
+        "Visual Studio 17 2022"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "CMake: Build obj-loader",
+      "type": "process",
+      "command": "cmake",
+      "args": [
+        "--build",
+        "${workspaceFolder}\\build",
+        "--config",
+        "Release",
+        "--target",
+        "obj-loader"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Run OBJ Loader",
+      "type": "process",
+      "command": "${workspaceFolder}\\build\\Release\\obj-loader.exe",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build and run OBJ Loader",
+      "dependsOn": [
+        "CMake: Build obj-loader",
+        "Run OBJ Loader"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

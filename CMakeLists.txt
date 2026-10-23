@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+﻿cmake_minimum_required(VERSION 3.20)
 project(obj-loader LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -16,23 +16,30 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/glfw/glfw.git
     GIT_TAG 3.4
 )
+FetchContent_MakeAvailable(glfw)
 
 FetchContent_Declare(
     glad
     GIT_REPOSITORY https://github.com/Dav1dde/glad.git
     GIT_TAG v2.0.8
 )
+FetchContent_GetProperties(glad)
+if(NOT glad_POPULATED)
+    FetchContent_Populate(glad)
+endif()
 
-FetchContent_MakeAvailable(glfw glad)
-
-glad_add_library(glad_gl_core_46 STATIC REPRODUCIBLE API gl:core=4.6)
+set(GLAD_CMAKE_DIR "${glad_SOURCE_DIR}/cmake")
+set(GLAD_SOURCES_DIR "${glad_SOURCE_DIR}")
 
 find_package(OpenGL REQUIRED)
+
+include("${GLAD_CMAKE_DIR}/GladConfig.cmake")
+glad_add_library(glad_gl_core_46 REPRODUCIBLE API gl:core=4.6)
 
 add_executable(obj-loader src/main.cpp)
 
 target_link_libraries(obj-loader PRIVATE
     glfw
-    glad_gl_core_46
     OpenGL::GL
+    glad_gl_core_46
 )
